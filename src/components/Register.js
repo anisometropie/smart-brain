@@ -26,7 +26,7 @@ class Register extends React.Component {
 
 	onSubmitRegister = (event) => {
 		event.preventDefault();
-		fetch('https://frozen-plateau-32463.herokuapp.com/register', {
+		fetch('https://recognition-of-the-face-api.herokuapp.com/register', {
 			method: 'post',
 			headers: { 'content-Type': 'application/json'},
 			body: JSON.stringify({

@@ -64,7 +64,7 @@ class App extends Component {
 	onPictureSubmit = () => {
 		this.setState({boxes: []});
 		this.setState({imageURL: this.state.input}, function() {
-			fetch('https://frozen-plateau-32463.herokuapp.com/imageQuery', {
+			fetch('https://recognition-of-the-face-api.herokuapp.com/imageQuery', {
 				method: 'put',
 				headers: { 'content-Type': 'application/json'},
 				body: JSON.stringify( {
@@ -121,5 +121,3 @@ class App extends Component {
 }
 
 export default App;
-
-// "https://samples.clarifai.com/metro-north.jpg"
