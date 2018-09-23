@@ -1,0 +1,14 @@
+#profile {
+	padding: 40px;
+	border: 1px black solid;
+	border-radius: 10px;
+}
+
+.field {
+	text-transform: uppercase;
+	color: darkblue;
+}
+
+.fieldValue {
+
+}

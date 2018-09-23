@@ -1,4 +1,5 @@
 import React from 'react';
+import { BACKEND_SERVER_URL } from 'constants.js';
 
 // function Register( {onRouteChange} ) {
 class Register extends React.Component {
@@ -26,10 +27,10 @@ class Register extends React.Component {
 
 	onSubmitRegister = (event) => {
 		event.preventDefault();
-		fetch('https://recognition-of-the-face-api.herokuapp.com/register', {
+		fetch(`${BACKEND_SERVER_URL}/register`, {
 			method: 'post',
-			headers: { 'content-Type': 'application/json'},
-			body: JSON.stringify({
+			headers: {'content-Type': 'application/json'},
+			body: JSON.stringify( {
 				name: this.state.name,
 				email: this.state.email,
 				password: this.state.password
@@ -37,6 +38,7 @@ class Register extends React.Component {
 		})
 		.then(response => response.json())
 		.then(response => {
+			console.log(response);
 			if ( typeof response === 'object') {
 				this.props.loadUser(response);
 				this.props.onRouteChange('home');
@@ -83,7 +85,6 @@ class Register extends React.Component {
 							/>
 						</div>
 					</fieldset>
-					<div>{error}</div>
 					<div className="">
 						<input
 							className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
@@ -91,6 +92,7 @@ class Register extends React.Component {
 							value="Register"
 							onClick={this.onSubmitRegister}
 						/>
+						<p>{error}</p>
 					</div>
 					<div className="lh-copy mt3">
 						<p href="#0" className="f6 link dim black db pointer" onClick={ () => onRouteChange("signin") }>Sign in</p>

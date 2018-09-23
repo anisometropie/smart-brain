@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import Navigation from 'components/Navigation';
-import Rank from 'components/Rank'
+// import Rank from 'components/Rank'
 import Logo from 'components/Logo';
 import ImageLinkInput from 'components/ImageLinkInput';
 import FaceRecognition from 'components/FaceRecognition';
 import Signin from 'components/Signin';
 import Register from 'components/Register';
+import History from 'components/History'
+import Leaderboard from 'components/Leaderboard';
+import Profile from 'components/Profile';
+import { BACKEND_SERVER_URL } from 'constants.js';
 import './App.css';
 
 const initialState = {
@@ -19,7 +23,9 @@ const initialState = {
 		email: '',
 		entries: 0,
 		joined: null
-	}
+	},
+	logged: false,
+	userHistory: []
 };
 
 class App extends Component {
@@ -32,15 +38,11 @@ class App extends Component {
 		this.setState(initialState);
 	}
 
-	loadUser = (newUser) => {
+	loadUser = ({userInfo, queries=[]}) => {
 		this.setState({
-			user: {
-				id: newUser.id,
-				name: newUser.name,
-				email: newUser.email,
-				entries: newUser.entries,
-				joined: newUser.joined
-			}
+			user: userInfo,
+			logged: true,
+			userHistory: queries
 		});
 	}
 
@@ -57,14 +59,21 @@ class App extends Component {
 		}
 	}
 
-	onInput = (event) => {
+	onChange = (event) => {
 		this.setState({input: event.target.value});
+	}
+
+	onThumbnailClick = (url) => {
+		console.log("click")
+		this.setState({
+			input: url
+		});
 	}
 
 	onPictureSubmit = () => {
 		this.setState({boxes: []});
 		this.setState({imageURL: this.state.input}, function() {
-			fetch('https://recognition-of-the-face-api.herokuapp.com/imageQuery', {
+			fetch(`${BACKEND_SERVER_URL}/imageQuery`, {
 				method: 'put',
 				headers: { 'content-Type': 'application/json'},
 				body: JSON.stringify( {
@@ -74,9 +83,10 @@ class App extends Component {
 			})
 			.then(response => response.json())
 			.then(response => {
-				const [count, clarifaiResponse] = response;
+				const {entries, clarifaiResponse, lastQueries} = response;
 				this.setState({
-					user: Object.assign( this.state.user, {entries: count} )
+					user: Object.assign( this.state.user, {entries: entries} ),
+					userHistory: lastQueries
 				});
 				this.displayBoxes(clarifaiResponse);
 			})
@@ -89,31 +99,55 @@ class App extends Component {
 			this.resetState();
 			this.setState( {route: 'signin'} );
 		}
+		else if (route === 'home') {
+			if (this.state.logged) {
+				this.setState( {route: route} );
+			}
+			else {
+				this.setState( {route: 'signin'} );
+			}
+		}
 		else {
 			this.setState( {route: route} );
 		}
 	}
 
 	render() {
-		const { imageURL, boxes, route, user } = this.state;
+		const { imageURL, boxes, route, user, userHistory, input } = this.state;
 		return (
 			<div className="App">
 				<Navigation route={route} onRouteChange={this.onRouteChange}/>
 				{
 					route === "register" ?
-						<div id="mainContainer">
+						<div id="mainContent">
 							<Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
-						</div> :
+						</div>
+					:
 					route === "signin"	 ?
-						<div id="mainContainer">
+						<div id="mainContent">
 							<Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
-						</div> :
-						<div id="mainContainer">
-							<Rank name={user.name} entries={user.entries}/>
-							<Logo />
-							<ImageLinkInput onInput={this.onInput} onPictureSubmit={this.onPictureSubmit}/>
+						</div>
+					:
+					route === "leaderboard"	 ?
+						<div id="mainContent">
+							<Leaderboard userID={user.id}/>
+						</div>
+					:
+					route === "profile"	 ?
+						<div id="mainContent">
+							<Profile userID={user.id}/>
+						</div>
+					:
+					<div id="mainContainer">
+						<aside id="sideBar">
+							<History userHistory={userHistory} onThumbnailClick={this.onThumbnailClick}/>
+						</aside>
+						<div id="mainContent">
+							<div id="hello">Welcome {user.name}</div>
+							<ImageLinkInput inputValue={input} onChange={this.onChange} onPictureSubmit={this.onPictureSubmit}/>
 							<FaceRecognition imageURL={imageURL} boxes={boxes}/>
 						</div>
+					</div>
 				}
 			</div>
 		);

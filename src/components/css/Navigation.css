@@ -1,4 +1,38 @@
 #navbar {
 	display: flex;
+	justify-content: space-between;
+	border: black 1px solid;
+	border-radius: 10px;
+}
+
+
+#title {
+	width: 350px;
+	margin: 20px 30px;
+	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+h1 {
+	padding: 0 10px;
+	font-size: 30px;
+	text-transform: capitalize;
+}
+
+#links {
+	display: flex;
 	justify-content: flex-end;
 }
+
+#links p{
+	font-size: 25px;
+	margin: auto;
+	padding: 0 10px;
+	cursor: pointer;
+	text-decoration: underline;
+	vertical-align: middle;
+}
+/* className='f3 link dim black underline pa3 pointer' */

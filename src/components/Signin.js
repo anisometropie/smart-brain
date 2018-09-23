@@ -1,4 +1,5 @@
 import React from 'react';
+import { BACKEND_SERVER_URL } from 'constants.js';
 
 // function Signin( {onRouteChange} ) {
 class Signin extends React.Component {
@@ -21,7 +22,7 @@ class Signin extends React.Component {
 
 	onSubmitSignin = (event) => {
 		event.preventDefault();
-		fetch('https://recognition-of-the-face-api.herokuapp.com/signin', {
+		fetch(`${BACKEND_SERVER_URL}/signin`, {
 			method: 'post',
 			headers: { 'content-Type': 'application/json'},
 			body: JSON.stringify( {
@@ -38,7 +39,8 @@ class Signin extends React.Component {
 			else if (typeof response === 'string') {
 				this.setState( {error: response} );
 			}
-		});
+		})
+		.catch(console.log);
 	}
 
 	render() {
@@ -68,7 +70,6 @@ class Signin extends React.Component {
 							/>
 						</div>
 					</fieldset>
-					<div>{error}</div>
 					<div className="">
 						<input
 							className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
@@ -76,6 +77,7 @@ class Signin extends React.Component {
 							value="Sign in"
 							onClick={this.onSubmitSignin}
 						/>
+						<p>{error}</p>
 					</div>
 					<div className="lh-copy mt3">
 						<p href="#0" className="f6 link dim black db pointer" onClick={ () => onRouteChange("register") }>Register</p>
