@@ -1,15 +1,33 @@
-#history {
+#historyContainer {
 	color: black;
 	font-family: "courier new", courier, monospace;
 	text-align: center;
-	box-sizing: border-box;
-	max-height: 700px;
-	overflow: hidden;
+	height: calc(100vh - 180px);
+}
+
+#historyTabs input {
+	border-radius: 10px 10px 0 0;
+	width: 50%;
+	border: 1px solid black;
+	border-bottom: none;
+	background-color: rgba( 255, 255, 255, 0 );
+}
+
+#historyTabs input:focus {
+	outline: none;
+}
+
+#historyTabs .selected {
+	background-color: rgba( 0, 0, 255, 0.2 );
 }
 
 #thumbnailBox {
+	height: 100%;
+	border: black 1px solid;
+	border-radius: 0 0 10px 10px;
+	overflow: hidden;
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	flex-wrap: wrap;
 }
 

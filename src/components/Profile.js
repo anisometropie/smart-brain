@@ -6,6 +6,7 @@ class Profile extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			route: 'loading',
 			userID: props.userID,
 			user: {
 				id:'',
@@ -27,7 +28,8 @@ class Profile extends React.Component {
 		.then(response => {
 			if ( typeof response === 'object') {
 				this.setState({
-					user: response
+					user: response,
+					route: 'profile'
 				});
 			}
 			else if (typeof response === 'string') {
@@ -37,32 +39,39 @@ class Profile extends React.Component {
 	}
 
 	render() {
-		const { leaderboard, user } = this.state;
-		return (
-			<div id="profile">
-				<h2>Profile</h2>
-				<div>
-					<p className='field'>User ID</p>
-					<p className='fieldValue'>{user.id}</p>
+		const { leaderboard, user, route } = this.state;
+		if (route === 'profile') {
+			return (
+				<div id="profile">
+					<h2 className="title">Profile</h2>
+					<div>
+						<p className='field'>User ID</p>
+						<p className='fieldValue'>{user.id}</p>
+					</div>
+					<div>
+						<p className='field'>Name</p>
+						<p className='fieldValue'>{user.name}</p>
+					</div>
+					<div>
+						<p className='field'>Email</p>
+						<p className='fieldValue'>{user.email}</p>
+					</div>
+					<div>
+						<p className='field'>Entries</p>
+						<p className='fieldValue'>{user.entries}</p>
+					</div>
+					<div>
+						<p className='field'>Joined</p>
+						<p className='fieldValue'>{user.joined}</p>
+					</div>
 				</div>
-				<div>
-					<p className='field'>Name</p>
-					<p className='fieldValue'>{user.name}</p>
-				</div>
-				<div>
-					<p className='field'>Email</p>
-					<p className='fieldValue'>{user.email}</p>
-				</div>
-				<div>
-					<p className='field'>Entries</p>
-					<p className='fieldValue'>{user.entries}</p>
-				</div>
-				<div>
-					<p className='field'>Joined</p>
-					<p className='fieldValue'>{user.joined}</p>
-				</div>
-			</div>
-		);
+			);
+		}
+		else {
+			return (
+				<div>Loading</div>
+			);
+		}
 	}
 }
 

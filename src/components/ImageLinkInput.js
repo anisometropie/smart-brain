@@ -4,9 +4,9 @@ import './css/ImageLinkInput.css'
 function ImageLinkInput( {inputValue, onPictureSubmit, onChange} ) {
 	return (
 		<div id="imageLinkContainer">
-			<p>Type images URL</p>
+			<p>Face Recognition</p>
 			<div id="urlInput">
-				<input id="imageURL" type="text" value={inputValue} onChange={onChange}/>
+				<input id="imageURL" type="text" placeholder="paste URL" value={inputValue} onChange={onChange}/>
 				<button onClick={onPictureSubmit}>Detect</button>
 			</div>
 		</div>

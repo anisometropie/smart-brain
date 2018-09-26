@@ -1,14 +1,21 @@
 import React from 'react';
 import { BACKEND_SERVER_URL } from 'constants.js';
+import Profile from 'components/Profile';
 import './css/Leaderboard.css'
 
 class Leaderboard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			route: 'loading',
 			userID: props.userID,
-			leaderboard: []
+			leaderboard: [],
+			userToLook: ''
 		}
+	}
+
+	onRouteChange(route, userToLook='') {
+		this.setState( {route: route, userToLook: userToLook} );
 	}
 
 	componentDidMount() {
@@ -26,7 +33,9 @@ class Leaderboard extends React.Component {
 					const gmt = date.indexOf('GMT');
 					console.log(userID, user.id)
 					return (
-						<tr key={index} className={userID === user.id ? 'user myself' : 'user'}>
+						<tr key={index}
+							className={userID === user.id ? 'user myself' : 'user'}
+							onClick={ () => this.onRouteChange("profile", user.id) }>
 							<td>{user.name}</td>
 							<td>{user.entries}</td>
 							<td>{date.substring(0,gmt)}</td>
@@ -34,7 +43,8 @@ class Leaderboard extends React.Component {
 					)
 				});
 				this.setState({
-					leaderboard: boardJSX
+					leaderboard: boardJSX,
+					route: 'leaderboard'
 				});
 			}
 			else if (typeof response === 'string') {
@@ -44,22 +54,38 @@ class Leaderboard extends React.Component {
 	}
 
 	render() {
-		const { leaderboard } = this.state;
-		return (
-			<div id="history">
-				<h2>Leaderboard</h2>
-				<table id="userList">
-					<tbody>
-					<tr>
-						<th>Name</th>
-						<th>Entries</th>
-						<th>Member since</th>
-					</tr>
-						{leaderboard}
-					</tbody>
-				</table>
-			</div>
-		);
+		const { leaderboard, route, userToLook } = this.state;
+		console.log(route);
+		if (route === 'leaderboard') {
+			return (
+				<div id="leaderboard">
+					<h2>Leaderboard</h2>
+					<table id="userList">
+						<tbody>
+							<tr>
+								<th>Name</th>
+								<th>Entries</th>
+								<th>Member since</th>
+							</tr>
+							{leaderboard}
+						</tbody>
+					</table>
+				</div>
+			);
+		}
+		else if (route === 'profile') {
+			return(
+				<div className="container">
+					<Profile userID={userToLook}/>
+					<input className="button" type="button" value="Back" onClick={ () => this.onRouteChange("leaderboard") }/>
+				</div>
+			);
+		}
+		else if(route === 'loading') {
+			return(
+				<div>Loading</div>
+			);
+		}
 	}
 }
 

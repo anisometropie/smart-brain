@@ -64,10 +64,9 @@ class App extends Component {
 	}
 
 	onThumbnailClick = (url) => {
-		console.log("click")
 		this.setState({
 			input: url
-		});
+		}, this.onPictureSubmit);
 	}
 
 	onPictureSubmit = () => {
@@ -115,7 +114,7 @@ class App extends Component {
 	render() {
 		const { imageURL, boxes, route, user, userHistory, input } = this.state;
 		return (
-			<div className="App">
+			<div id="App">
 				<Navigation route={route} onRouteChange={this.onRouteChange}/>
 				{
 					route === "register" ?
@@ -138,12 +137,11 @@ class App extends Component {
 							<Profile userID={user.id}/>
 						</div>
 					:
-					<div id="mainContainer">
+					<div id="pageBody">
 						<aside id="sideBar">
 							<History userHistory={userHistory} onThumbnailClick={this.onThumbnailClick}/>
 						</aside>
 						<div id="mainContent">
-							<div id="hello">Welcome {user.name}</div>
 							<ImageLinkInput inputValue={input} onChange={this.onChange} onPictureSubmit={this.onPictureSubmit}/>
 							<FaceRecognition imageURL={imageURL} boxes={boxes}/>
 						</div>

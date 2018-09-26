@@ -1,8 +1,9 @@
 #imageLinkContainer {
 	box-shadow: 2px 2px 4px rgba( 0, 0, 0, 0.2 );
 	width: 600px;
-	background: #0037FF;
+	background: rgba(0, 55, 255, 0.3);
 	border: 1px black solid;
+	border-radius: 10px;
 	text-align: center;
 }
 

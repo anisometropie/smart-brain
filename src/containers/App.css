@@ -1,14 +1,17 @@
-#mainContainer {
+#App {
+	width: 96%;
+	margin: 10px auto;
+}
+
+#pageBody {
 	display: flex;
 	flex-direction: row;
 }
 
 #sideBar {
+	margin: 20px 0 ;
 	flex: 0 1 350px;
 	text-align: center;
-	border: black 1px solid;
-	border-radius: 10px;
-	margin: 10px 20px;
 }
 
 #mainContent {
